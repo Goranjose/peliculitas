@@ -25,7 +25,8 @@ function navigator() {
   } else {
     homePage()
   }
-
+  
+  // Dependiendo del navegador, funciona una manera u otra
   document.documentElement.scrollTop = 0;
   document.body.scrolltop = 0
 }
