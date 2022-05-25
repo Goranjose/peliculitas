@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Goranjose/peliculitas/issues"
   },
-  "homepage": "https://github.com/Goranjose/peliculitas#readme"
+  "homepage": "https://github.com/Goranjose/peliculitas#readme",
+  "dependencies": {
+    "axios": "^0.27.2"
+  }
 }
