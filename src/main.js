@@ -15,6 +15,9 @@ async function createMovie(movies, container) {
     // const trendingMoviesPreviewList = $("#trendingPreview .trendingPreview-movieList")
     const movieContainer = document.createElement('div')
     movieContainer.classList.add('movie-container')
+    movieContainer.addEventListener("click", () => {
+      location.hash = `#movie=${movie.id}`
+    })
     const movieImg = document.createElement('img')
     movieImg.classList.add('movie-img')
     movieImg.alt = movie.title
@@ -24,7 +27,7 @@ async function createMovie(movies, container) {
   });
 }
 
-async function createCategory(categories, container) {
+async function createCategories(categories, container) {
   container.innerHTML = ''
 
   categories.forEach(category => {
@@ -55,7 +58,7 @@ async function getCategegoriesPreview() {
   const { data} = await api(`/genre/movie/list`)
   const categories = data.genres
 
-  createCategory(categories, categoriesPreviewList)
+  createCategories(categories, categoriesPreviewList)
 }
 
 async function getMoviesByCategory(id) {
@@ -84,4 +87,27 @@ async function getTrendingMovies() {
   const movies = data.results
 
   createMovie(movies, genericSection)
+}
+async function getMovieById(id) {
+  const { data: movie } = await api(`/movie/${id}`)
+
+  const movieImgUrl = `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+
+  headerSection.style.backgroundImage = `
+  linear-gradient(180deg, rgba(0, 0, 0, 0.35) 19.27%, rgba(0, 0, 0, 0) 29.17%),
+  url(${movieImgUrl})`;
+
+  movieDetailTitle.innerText = movie.title
+  movieDetailDescription.innerText = movie.overview
+  movieDetailScore.innerText = movie.vote_average
+
+  createCategories(movie.genres, movieDetailCategoriesList)
+  getRelatedMovies(id)
+}
+
+async function getRelatedMovies(id) {
+  const { data } = await api(`/movie/${id}/similar`)
+  const relatedMovies = data.results
+
+  createMovie(relatedMovies, relatedMoviesContainer)
 }

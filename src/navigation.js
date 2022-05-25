@@ -1,6 +1,6 @@
-// window.addEventListener("DOMContentLoaded", navigator, false)
 window.addEventListener("hashchange", navigator, false)
 
+// window.addEventListener("DOMContentLoaded", navigator, false)
 window.addEventListener(
   'DOMContentLoaded',
   () => {
@@ -14,7 +14,7 @@ window.addEventListener(
 arrowBtn.addEventListener('click', () => {
   const stateLoad = window.history.state ? window.history.state.loadUrl : '';
   if (stateLoad.includes('#')) {
-      window.location.hash = '';
+      window.location.hash = '#home';
   } else {
       window.history.back();
   }
@@ -28,6 +28,8 @@ arrowBtn.addEventListener('click', () => {
 
 searchFormBtn.addEventListener('click', () => {
   // location.hash = '#search=' + searchFormInput.value;
+  // Solución al string vacío en el form
+  // searchFormInput.value !== "" ? location.hash = 'search=' + searchFormInput.value  : e.preventDefault()
   location.hash = `#search=${searchFormInput.value.trim()}`;
 });
 
@@ -113,6 +115,9 @@ function movieDetailsPage() {
   categoriesPreviewSection.classList.add('inactive');
   genericSection.classList.add('inactive');
   movieDetailSection.classList.remove('inactive');
+
+  const [_, movieId] = location.hash.split('=');
+  getMovieById(movieId)
 }
 
 function searchPage() {
